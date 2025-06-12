@@ -194,28 +194,28 @@ def create_order():
     return jsonify({'message': 'Order created', 'order_id': new_order.id}), 201
 
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
 
-        if not User.query.first():
-            admin1 = User(
-                email=os.getenv("ADMIN_1_EMAIL")
-            )
-            admin1.set_password(os.getenv("ADMIN_1_PASSWORD"))
+with app.app_context():
+    db.create_all()
 
-            admin2 = User(
-                email=os.getenv("ADMIN_2_EMAIL")
-            )
-            admin2.set_password(os.getenv("ADMIN_2_PASSWORD"))
+    if not User.query.first():
+        admin1 = User(
+            email=os.getenv("ADMIN_1_EMAIL")
+        )
+        admin1.set_password(os.getenv("ADMIN_1_PASSWORD"))
 
-            admin3 = User(
-                email=os.getenv("ADMIN_3_EMAIL")
-            )
-            admin3.set_password(os.getenv("ADMIN_3_PASSWORD"))
+        admin2 = User(
+            email=os.getenv("ADMIN_2_EMAIL")
+        )
+        admin2.set_password(os.getenv("ADMIN_2_PASSWORD"))
 
-            db.session.add_all([admin1, admin2, admin3])
-            db.session.commit()
-    from waitress import serve
-    serve(app, host='0.0.0.0', port=8080)
+        admin3 = User(
+            email=os.getenv("ADMIN_3_EMAIL")
+        )
+        admin3.set_password(os.getenv("ADMIN_3_PASSWORD"))
+
+        db.session.add_all([admin1, admin2, admin3])
+        db.session.commit()
+from waitress import serve
+serve(app, host='0.0.0.0', port=8080)
 
