@@ -215,6 +215,6 @@ if __name__ == '__main__':
 
             db.session.add_all([admin1, admin2, admin3])
             db.session.commit()
-
-    app.run(debug=True, host='0.0.0.0')
+    from waitress import serve
+    serve(app, host='0.0.0.0', port=8080)
 
