@@ -4,8 +4,8 @@ from models import db, User, Shop, Department, Product, Order, OrderItem
 from flask import request, jsonify
 from werkzeug.security import generate_password_hash
 import os
-from dotenv import load_dotenv
-load_dotenv()
+#from dotenv import load_dotenv
+#load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
