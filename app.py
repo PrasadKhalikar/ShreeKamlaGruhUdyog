@@ -263,15 +263,28 @@ def create_order():
 
 @app.route('/product-summary/<department>')
 def product_summary(department):
-    orders = Order.query.filter_by(department=department).all()
-    product_counts = {}
+    try:
+        orders = (
+            db.session.query(Order)
+            .join(Department)
+            .filter(Department.name == department)
+            .all()
+        )
 
-    for order in orders:
-        for item in order.items:
-            name = item.product.name
-            product_counts[name] = product_counts.get(name, 0) + item.quantity
+        product_counts = {}
 
-    return jsonify([{"name": name, "total_quantity": qty} for name, qty in product_counts.items()])
+        for order in orders:
+            for item in order.items:
+                name = item.product.name
+                product_counts[name] = product_counts.get(name, 0) + item.quantity
+
+        return jsonify([
+            {"name": name, "total_quantity": qty}
+            for name, qty in product_counts.items()
+        ])
+    except Exception as e:
+        print("Error in product-summary:", e)
+        return jsonify({"error": "Internal Server Error", "details": str(e)}), 500
 
 
 with app.app_context():
